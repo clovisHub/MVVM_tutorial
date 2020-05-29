@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.clovis.mvvm_tutorial.databinding.ActivityFirstBinding
+import com.clovis.mvvm_tutorial.models.Post
 import com.clovis.mvvm_tutorial.viewmodels.FirstViewModel
+import com.clovis.mvvm_tutorial.views.ItemActivity.Companion.startItemActivity
 
-class FirstActivity : AppCompatActivity(){
+class FirstActivity : AppCompatActivity(), PostsAdapter.ListenerClick{
 
-    private val postListAdapter :PostsAdapter by lazy { PostsAdapter() }
+    private val postListAdapter :PostsAdapter by lazy { PostsAdapter(this) }
     private val viewModel: FirstViewModel by lazy { FirstViewModel(application) }
     private var flag = false
 
@@ -44,5 +46,9 @@ class FirstActivity : AppCompatActivity(){
         fun startFirstActivity(context: AppCompatActivity) {
             context.startActivity(Intent(context, FirstActivity::class.java))
         }
+    }
+
+    override fun onCick(post: Post) {
+        startItemActivity(this, post)
     }
 }
