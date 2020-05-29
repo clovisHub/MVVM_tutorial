@@ -3,13 +3,13 @@ package com.clovis.mvvm_tutorial.views
 import com.clovis.mvvm_tutorial.models.Post
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.clovis.mvvm_tutorial.R
 import com.clovis.mvvm_tutorial.databinding.PostItemBinding
 
-
-class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostHolder>() {
+class PostsAdapter (private val listener: ListenerClick): RecyclerView.Adapter<PostsAdapter.PostHolder>() {
 
     private var postsList:List<Post> = mutableListOf()
 
@@ -28,6 +28,9 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostHolder>() {
 
     override fun onBindViewHolder(postHolder: PostHolder, position: Int) {
         postHolder.view.post = postsList[position]
+        postHolder.view.root.setOnClickListener {
+              listener.onCick(postsList[position])
+        }
     }
 
     override fun getItemCount(): Int {
@@ -35,4 +38,8 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostHolder>() {
     }
 
     class PostHolder(val view: PostItemBinding) : RecyclerView.ViewHolder(view.root)
+
+    interface ListenerClick {
+       fun  onCick(post: Post)
+    }
 }
